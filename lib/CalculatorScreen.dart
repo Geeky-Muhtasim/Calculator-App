@@ -13,7 +13,7 @@ class _CalculatorState extends State<Calculator> {
   String result = "0";
   List <String> buttonList = [
     'AC',
-    'V',
+    // 'V',
     'C',
     'x',
     '/',
@@ -47,18 +47,25 @@ class _CalculatorState extends State<Calculator> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // children: [
+      //
+      // ],
       backgroundColor: backgroundColor1,
       body: Column(
-
         children: [
+            Text('Calculator', style: TextStyle(
+              color: textWhite,
+              fontSize: 30,
+            ),
+            ),
         SizedBox(
-          height: MediaQuery.of(context).size.height/3,
+          height: MediaQuery.of(context).size.height/5,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
             Container(
-              padding: EdgeInsets.all(16),
-              alignment: Alignment.centerRight,
+              padding: EdgeInsets.all(10),
+              alignment: Alignment.centerLeft,
               child: Text(
                 userInput,
                 style: TextStyle(
@@ -82,29 +89,98 @@ class _CalculatorState extends State<Calculator> {
               ),
           ],),
         ),
-          Divider(
-            color: buttonColor
-          ),
+          // Divider(
+          //   color: buttonColor
+          // ),
           Expanded(child: Container(
+            width: 500,
+            // height: 500,
             padding: EdgeInsets.all(10),
             child: GridView.builder(
+              physics: NeverScrollableScrollPhysics(),
               itemCount: buttonList.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
+              // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 100,
               crossAxisSpacing: 5,
               mainAxisSpacing: 5,
             ),
                 itemBuilder: (BuildContext context, int index){
-              return CustomButton(buttonList[index]);
+              return CalculatorButton(buttonList[index]);
             },
             ),
           ),
           ),
+          // Expanded(
+          //   child: Container(
+          //     width: 500,
+          //     padding: EdgeInsets.all(10),
+          //     child: Column(
+          //       children: [
+          //         // Rows 1-4
+          //         for (int row = 0; row < 4; row++)
+          //           Row(
+          //             children: [
+          //               for (int col = 0; col < 4; col++)
+          //                 CalculatorButton(buttonList[row * 4 + col]),
+          //             ],
+          //           ),
+          //         // Row 5 (last row)
+          //         Row(
+          //           children: [
+          //             for (int col = 0; col < 3; col++)
+          //               CalculatorButton(buttonList[16 + col]),
+          //             CalculatorButton(buttonList[19], maxExtent: 200.0), // Equal button
+          //           ],
+          //         ),
+          //         // Row 6 (empty row)
+          //         Row(
+          //           children: [
+          //             for (int col = 0; col < 4; col++)
+          //               SizedBox(width: 100),
+          //           ],
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
       ],
       ),
     );
   }
-  Widget CustomButton(String text){
+  Widget CalculatorButton(String text){
+    if (text == "="){
+      return InkWell(
+
+        // splashColor: buttonColor,
+        onTap: (){
+          setState(() {
+            handleButtons(text);
+          });
+        },
+        // child: Container(
+        //   width: 200,
+        //
+        // )
+        child: Ink(
+          decoration: BoxDecoration(
+
+            color: getBgColor(text),
+          ),
+          child: Center(
+            child: Text(
+              // padding: EdgeInsets.all(10),
+              text,
+              style: TextStyle(
+                color: textWhite,
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      );
+    };
     return InkWell(
       splashColor: buttonColor,
       onTap: (){
@@ -115,7 +191,6 @@ class _CalculatorState extends State<Calculator> {
       child: Ink(
         decoration: BoxDecoration(
             color: getBgColor(text),
-            borderRadius: BorderRadius.circular(10)
         ),
         child: Center(
           child: Text(
@@ -131,7 +206,33 @@ class _CalculatorState extends State<Calculator> {
       ),
     );
   }
-
+  // Widget CalculatorButton(String text, {double maxExtent = 100.0}) {
+  //   return Expanded(
+  //     child: InkWell(
+  //       splashColor: buttonColor,
+  //       onTap: () {
+  //         setState(() {
+  //           handleButtons(text);
+  //         });
+  //       },
+  //       child: Ink(
+  //         decoration: BoxDecoration(
+  //           color: getBgColor(text),
+  //         ),
+  //         child: Center(
+  //           child: Text(
+  //             text,
+  //             style: TextStyle(
+  //               color: textWhite,
+  //               fontSize: 30,
+  //               fontWeight: FontWeight.bold,
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
   getBgColor(String text){
     if(text == "="){
       return Color(0xff296D98);
